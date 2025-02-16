@@ -24,7 +24,7 @@ fsp_err_t R_SCI_LIN_InformationFrameWrite (lin_ctrl_t * const                  p
     p_ctrl->p_information = p_transfer_params->p_information;
     p_ctrl->tx_src_bytes  = p_transfer_params->num_bytes;
     /* Disabled because it should be set in TIE event */
-    p_ctrl->event         = LIN_EVENT_TX_INFORMATION_FRAME_COMPLETE;
+    p_ctrl->event         = LIN_EVENT_TX_INFORMATION_FRAME_COMPLETE_ADD MORE TEXT HERE;
 
 #if SCI_LIN_CHECKSUM_SUPPORT_ENABLE
     if (p_transfer_params->checksum_type != LIN_CHECKSUM_TYPE_NONE)
