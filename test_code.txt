@@ -50,4 +50,4 @@ fsp_err_t R_SCI_LIN_InformationFrameWrite (lin_ctrl_t * const                  p
 	This text is edited by 1st user.
 	This text is edited by 2nd user -> test merge function
 	this text is added in branch_1
-	
+	this text is added in branch_2
