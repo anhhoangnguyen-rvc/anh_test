@@ -53,3 +53,4 @@ fsp_err_t R_SCI_LIN_InformationFrameWrite (lin_ctrl_t * const                  p
 	this text is added in branch_2
 	add new from branch_1
 	add new from b3
+	bug fix in b3 -> test cherry-pick
