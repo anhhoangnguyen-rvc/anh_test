@@ -46,7 +46,7 @@ fsp_err_t R_SCI_LIN_InformationFrameWrite (lin_ctrl_t * const                  p
         p_ctrl->last_tx_byte = p_transfer_params->p_information[p_transfer_params->num_bytes - 1];
     }
 	
-	This text is edited by 2nd user.
+	This text is edited by 2nd user -> update in main, to rebase in b3
 	This text is edited by 1st user.
 	This text is edited by 2nd user -> test merge function
 	this text is added in branch_1
