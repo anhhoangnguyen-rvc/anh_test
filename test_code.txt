@@ -45,3 +45,5 @@ fsp_err_t R_SCI_LIN_InformationFrameWrite (lin_ctrl_t * const                  p
          * whether that byte represents a literal checksum. */
         p_ctrl->last_tx_byte = p_transfer_params->p_information[p_transfer_params->num_bytes - 1];
     }
+	
+	This text is edited by end user.
