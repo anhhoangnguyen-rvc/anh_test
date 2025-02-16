@@ -54,3 +54,4 @@ fsp_err_t R_SCI_LIN_InformationFrameWrite (lin_ctrl_t * const                  p
 	add new from branch_1
 	add new from b3
 	bug fix in b3 -> test cherry-pick
+	bug fix 2nd b3 -> no cherry-pick
