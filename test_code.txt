@@ -1,0 +1,47 @@
+fsp_err_t R_SCI_LIN_InformationFrameWrite (lin_ctrl_t * const                  p_api_ctrl,
+                                           const lin_transfer_params_t * const p_transfer_params)
+{
+    sci_lin_instance_ctrl_t * p_ctrl = (sci_lin_instance_ctrl_t *) p_api_ctrl;
+
+#if SCI_LIN_CFG_PARAM_CHECKING_ENABLE
+
+    /* Common parameter checking */
+    fsp_err_t err = r_sci_lin_information_read_write_param_check(p_api_ctrl, p_transfer_params);
+    FSP_ERROR_RETURN(FSP_SUCCESS == err, err);
+#endif
+    R_SCI0_Type * p_reg = p_ctrl->p_reg;
+
+    if (LIN_MODE_SLAVE == p_ctrl->p_cfg->mode)
+    {
+        /* Stop any in-progress break field transmission */
+        p_reg->TCR_b.TCST = 0;
+    }
+
+    /* Disable transmit interrupts, reception interrupts, and transmission */
+    p_reg->SCR &= (uint8_t) ~(R_SCI0_SCR_TIE_Msk | R_SCI0_SCR_TEIE_Msk | R_SCI0_SCR_TE_Msk);
+
+    /* Prepare the information frame transmission state. */
+    p_ctrl->p_information = p_transfer_params->p_information;
+    p_ctrl->tx_src_bytes  = p_transfer_params->num_bytes;
+    /* Disabled because it should be set in TIE event */
+    p_ctrl->event         = LIN_EVENT_TX_INFORMATION_FRAME_COMPLETE;
+
+#if SCI_LIN_CHECKSUM_SUPPORT_ENABLE
+    if (p_transfer_params->checksum_type != LIN_CHECKSUM_TYPE_NONE)
+    {
+        /* If checksum generation is enabled, calculate the checksum */
+        p_ctrl->last_tx_byte = r_sci_lin_checksum_calculate(p_transfer_params->id,
+                                                            p_transfer_params->p_information,
+                                                            p_transfer_params->num_bytes,
+                                                            p_transfer_params->checksum_type);
+        p_ctrl->tx_src_bytes++;
+    }
+    else
+#endif
+    {
+        /* User requested not to append checksum. Therefore either we are not using a checksum,
+         * or we are using a custom checksum. Copy last byte into 'tx_checksum' field.
+         * From txi_isr perspective, last byte is always read from tx_checksum, regardless of
+         * whether that byte represents a literal checksum. */
+        p_ctrl->last_tx_byte = p_transfer_params->p_information[p_transfer_params->num_bytes - 1];
+    }
